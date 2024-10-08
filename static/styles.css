@@ -1,0 +1,49 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    color: white;
+}
+#fullscreenButton {
+    padding: 20px;
+    background-color: #1e90ff;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    position: fixed;  /* 位置を固定 */
+    bottom: 20px;     /* 画面下から20px */
+    right: 20px;      /* 画面右から20px */
+    z-index: 1000;    /* 他の要素の上に表示されるようにするためのインデックス */
+}
+#fullscreenButton:active {
+    background-color: #4682b4;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+#content {
+    width: 80%;
+    height: 80%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+}
+.button {
+    padding: 10px;
+    background-color: #1e90ff;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+    margin-top: 20px;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pseudo Navigation Example</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+<body>
+    <button id="fullscreenButton">Go Fullscreen</button>
+
+    <div id="content">
+        <!-- ここに各画面のHTMLがロードされる -->
+    </div>
+
+    <script>
+
+        const button = document.getElementById('fullscreenButton');
+
+        // フルスクリーン時にボタンを非表示にする関数
+        function hideButtonOnFullscreen() {
+            if (document.fullscreenElement) {
+                button.style.display = 'none'; // フルスクリーン時にボタンを非表示
+            } else {
+                button.style.display = 'block'; // フルスクリーン解除時にボタンを再表示
+            }
+        }
+
+        // フルスクリーンの状態が変わるたびに呼び出されるイベントリスナー
+        document.addEventListener('fullscreenchange', hideButtonOnFullscreen);
+
+        button.addEventListener('click', () => {
+            // ドキュメント全体をフルスクリーンにする
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                });
+            } else {
+                // すでに全画面モードなら全画面を解除する
+                document.exitFullscreen();
+            }
+        });
+        function loadPage(page) {
+            // AJAXリクエストを使って外部のHTMLを読み込む
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', page, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById('content').innerHTML = xhr.responseText;
+                } else {
+                    console.error('Failed to load:', xhr.status, xhr.statusText);
+                }
+            };
+            xhr.send();
+        }
+
+        // 初期状態でホーム画面を読み込む
+        loadPage('/home');
+    </script>
+
+</body>
+</html>
