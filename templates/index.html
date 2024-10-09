@@ -40,13 +40,30 @@
                 document.exitFullscreen();
             }
         });
-        function loadPage(page) {
-            // AJAXリクエストを使って外部のHTMLを読み込む
+        function loadPage(page, callback = null) {
             const xhr = new XMLHttpRequest();
             xhr.open('GET', page, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    document.getElementById('content').innerHTML = xhr.responseText;
+                    const contentDiv = document.getElementById('content');
+                    contentDiv.innerHTML = xhr.responseText;
+
+                    // 読み込んだHTML内の<script>タグを実行
+                    const scripts = contentDiv.getElementsByTagName('script');
+                    for (let i = 0; i < scripts.length; i++) {
+                        const newScript = document.createElement('script');
+                        if (scripts[i].src) {
+                            newScript.src = scripts[i].src;
+                        } else {
+                            newScript.innerHTML = scripts[i].innerHTML;
+                        }
+                        document.head.appendChild(newScript);
+                    }
+
+                    // callbackが指定されている場合のみ実行
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
                 } else {
                     console.error('Failed to load:', xhr.status, xhr.statusText);
                 }
